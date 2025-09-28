@@ -45,7 +45,7 @@ def save_progress(progress):
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("home.html")
 
 @app.route("/questions")
 def get_questions():
@@ -133,3 +133,34 @@ def get_notes():
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
+
+from flask import Flask, render_template, request, redirect, url_for
+
+app = Flask(__name__)
+
+@app.route("/")
+def signup():
+    return render_template("signup.html")
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+@app.route("/test")
+def test():
+    return render_template("test.html")
+
+@app.route("/results")
+def results():
+    return render_template("results.html")
+
+@app.route("/notes")
+def notes():
+    return render_template("notes.html")
+
+if __name__ == "__main__":
+    app.run(debug=True)
+@app.route("/")
+def home():
+    return render_template("home.html")
+
