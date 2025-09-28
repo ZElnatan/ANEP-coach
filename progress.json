@@ -1,0 +1,10 @@
+{
+  "guest": {
+    "Vectors": 80.0,
+    "Projectile Motion": 20.0
+  },
+  "Elnatan": {
+    "Vectors": 0.2,
+    "Projectile Motion": 99.8
+  }
+}

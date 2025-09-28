@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ANEP Coach</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    h1 { color: darkblue; }
+    .question { margin-bottom: 15px; }
+    button { padding: 8px 15px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>📘 ANEP Coach</h1>
+
+  <div>
+    <label>Student Name: </label>
+    <input id="studentName" placeholder="Enter your name" />
+    <button onclick="loadQuestions()">Start Quiz</button>
+  </div>
+
+  <div id="quiz"></div>
+  <button id="submitBtn" style="display:none;" onclick="submitAnswers()">Submit</button>
+
+  <h2>Results</h2>
+  <pre id="results"></pre>
+
+  <h2>Your Progress</h2>
+  <canvas id="progressChart" width="400" height="200"></canvas>
+
+  <script>
+    let questions = [];
+    let answers = [];
+
+    async function loadQuestions() {
+      const res = await fetch("/questions");
+      questions = await res.json();
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = "";
+      answers = [];
+
+      questions.forEach(q => {
+        const div = document.createElement("div");
+        div.className = "question";
+        div.innerHTML = `<b>${q.question}</b><br>`;
+        q.choices.forEach((c, i) => {
+          div.innerHTML += `<input type="radio" name="q${q.id}" value="${i}"> ${c}<br>`;
+        });
+        quizDiv.appendChild(div);
+      });
+
+      document.getElementById("submitBtn").style.display = "block";
+    }
+
+    async function submitAnswers() {
+      const student = document.getElementById("studentName").value || "guest";
+      answers = questions.map(q => {
+        const choice = document.querySelector(`input[name="q${q.id}"]:checked`);
+        return { question_id: q.id, choice: choice ? parseInt(choice.value) : -1 };
+      });
+
+      const res = await fetch("/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ student, answers })
+      });
+      const data = await res.json();
+      document.getElementById("results").textContent = JSON.stringify(data, null, 2);
+
+      loadProgress(student);
+    }
+
+    async function loadProgress(student) {
+      const res = await fetch(`/progress/${student}`);
+      const progress = await res.json();
+
+      const ctx = document.getElementById("progressChart").getContext("2d");
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: Object.keys(progress),
+          datasets: [{
+            label: "Mastery Score",
+            data: Object.values(progress),
+            backgroundColor: "rgba(54, 162, 235, 0.6)"
+          }]
+        },
+        options: {
+          scales: {
+            y: { beginAtZero: true, max: 100 }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

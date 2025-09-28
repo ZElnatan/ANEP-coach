@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "question": "Which is a vector quantity?",
+    "choices": ["Speed", "Mass", "Velocity", "Temperature"],
+    "answer": 2,
+    "topic": "Vectors"
+  },
+  {
+    "id": 2,
+    "question": "A ball is thrown at 20 m/s at 30°. What is the horizontal range?",
+    "choices": ["17.6 m", "34.6 m", "20 m", "40 m"],
+    "answer": 1,
+    "topic": "Projectile Motion"
+  }
+]
