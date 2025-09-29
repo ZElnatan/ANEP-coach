@@ -73,3 +73,55 @@ footer {
   color: #8892b0;
   font-size: 0.9rem;
 }
+/* General reset */
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(120deg, #007bff, #00c6ff);
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+/* Signup container */
+.signup-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+/* Form styling */
+.signup-container input {
+  width: 100%;
+  padding: 0.7rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.signup-container button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  width: 100%;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
+.signup-container button:hover {
+  background: #0056b3;
+}
+
+.login-link {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}

@@ -42,6 +42,23 @@ def save_progress(progress):
 
 
 # ---------- ROUTES ----------
+import json
+import os
+
+USERS_FILE = "users.json"
+
+def load_users():
+    if os.path.exists(USERS_FILE):
+        with open(USERS_FILE, "r") as f:
+            try:
+                return json.load(f)
+            except json.JSONDecodeError:
+                return []
+    return []
+
+def save_users(users):
+    with open(USERS_FILE, "w") as f:
+        json.dump(users, f, indent=4)
 
 
 
@@ -136,8 +153,32 @@ from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
-@app.route("/")
+
+
+@app.route("/signup", methods=["GET", "POST"])
 def signup():
+    if request.method == "POST":
+        name = request.form["name"]
+        email = request.form["email"]
+        password = request.form["password"]
+
+        users = load_users()
+
+        # Check if email already exists
+        for user in users:
+            if user["email"] == email:
+                return "⚠️ Email already registered. Try logging in."
+
+        # Save new user
+        users.append({
+            "name": name,
+            "email": email,
+            "password": password   # ⚠️ Not secure, but fine for now
+        })
+        save_users(users)
+
+        return f"✅ Welcome {name}, your account has been created!"
+
     return render_template("signup.html")
 
 @app.route("/about")
